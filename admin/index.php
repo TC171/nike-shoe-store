@@ -25,4 +25,12 @@ match ($act) {
     'sua-danh-muc' => (new AdminDanhMucController())->postEditDanhMuc(),
     'form-sua-danh-muc' => (new AdminDanhMucController())->formEditDanhmuc(),
     'xoa-danh-muc' => (new AdminDanhMucController())->deleteDanhMuc(),
+
+    //route sản phẩm
+    'san-pham' => (new AdminSanPhamController())->danhSachSanPham(),
+    'them-san-pham' => (new AdminSanPhamController())->postAddSanPham(),
+    'form-them-san-pham' => (new AdminSanPhamController())->formAddSanPham(),
+    // 'sua-danh-muc' => (new AdminSanShamController())->postEditSanPham(),
+    // 'form-sua-danh-muc' => (new AdminSanPhamController())->formEditSanPham(),
+    // 'xoa-danh-muc' => (new AdminSanPhamController())->deleteSanPham(),
 };
