@@ -37,6 +37,7 @@
                             <input type="text" name="id" value="<?= $danhMuc['id'] ?>" hidden>
                             <div class="card-body">
                                 <div class="form-group">
+                                    <input type="hidden" name="san_pham_id" value="<?= $sanPham['id'] ?>" >
                                     <label>Tên Danh Mục</label>
                                     <input type="text" class="form-control" name="ten_danh_muc"
                                         placeholder="Nhập Tên Danh Mục" value="<?= $danhMuc['ten_danh_muc'] ?>">
