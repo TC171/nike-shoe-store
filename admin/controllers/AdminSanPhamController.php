@@ -79,8 +79,8 @@ class AdminSanPhamController
                             'error' => $img_array['error'][$key],
                             'size' => $img_array['size'][$key],
                         ];
-                        $link_hinh_anh = uploadFile( $file, './uploads' );
-                        $this->modelSanPham->InsertAlbumSanPham($san_pham_id,$link_hinh_anh);
+                        $link_hinh_anh = uploadFile( $file, './uploads/' );
+                        $san_pham_id = $this->modelSanPham->InsertAlbumSanPham($san_pham_id,$link_hinh_anh);
                     }
                 }
                 header("Location: " . BASE_URL_ADMIN . '?act=san-pham') ;
@@ -161,7 +161,7 @@ class AdminSanPhamController
             //logic sửa ảnh
             if (isset($hinh_anh) && $hinh_anh['error'] == UPLOAD_ERR_OK) {
                 //upload ảnh mới lên
-                $new_file = uploadFile($hinh_anh, './uploads');
+                $new_file = uploadFile($hinh_anh, './uploads/');
 
                 if (!empty($old_file)) {    //Nếu có ảnh cũ thì xóa đi
                     deleteFile($old_file);
@@ -193,7 +193,7 @@ class AdminSanPhamController
             $upload_file = [];
             foreach ($img_array['name'] as $key=>$value){
                 if ($img_array['error'][$key] == UPLOAD_ERR_OK ) {
-                    $new_file = uploadFileAlbum($img_array ,'./uploads' , $key);
+                    $new_file = uploadFileAlbum($img_array ,'./uploads/' , $key);
                     if($new_file){
                         $upload_file[] = [
                             'id'=> $current_img_ids[$key] ?? null,
