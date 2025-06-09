@@ -13,6 +13,7 @@
 </div>
 <!-- ./wrapper -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <!-- jQuery -->
 <script src="./assets/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->

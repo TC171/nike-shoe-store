@@ -16,7 +16,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Danh Sách Giày</h1>
+          <h1>Quan ly danh sach don hang</h1>
         </div>
       </div>
     </div><!-- /.container-fluid -->
@@ -31,9 +31,6 @@
 
           <div class="card">
             <div class="card-header">
-              <a href="<?= BASE_URL_ADMIN . '?act=form-them-san-pham' ?>">
-                <button class="btn btn-success">Thêm Giày Mới</button>
-              </a>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -41,34 +38,30 @@
                 <thead>
                   <tr>
                     <th>STT</th>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Ảnh Sản Phẩm</th>
-                    <th>Giá Gốc</th>
-                    <th>Giá Khuyến Mãi</th>
-                    <th>Danh Mục</th>
+                    <th>Mã đơn hàng</th>
+                    <th>Tên người nhận</th>
+                    <th>Số Điện Thoại</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
                     <th>Trạng Thái</th>
                     <th>Thao Tác</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php foreach ($listSanPham as $key => $sanPham): ?>
+                  <?php foreach ($listDonHang as $key => $donHang): ?>
                     <tr>
                       <td><?= $key + 1 ?></td>
-                      <td><?= $sanPham['ten_san_pham'] ?></td>
-                      <td>
-                        <img src="<?= BASE_URL . $sanPham['hinh_anh'] ?>" style="width: 100px" alt=""
-                          onerror="this.onerror=null;this.src='https://img.lovepik.com/free-png/20210927/lovepik-sneakers-png-image_401526450_wh1200.png'">
-                      </td>
-                      <td><?= $sanPham['gia_san_pham'] ?></td>
-                      <td><?= $sanPham['gia_khuyen_mai'] ?></td>
-                      <td><?= $sanPham['ten_danh_muc'] ?></td>
-                      <td><?= $sanPham['trang_thai'] == 1 ? 'Còn Hàng' : 'Hết Hàng' ?></td>
-
+                      <td><?= $donHang['ma_don_hang'] ?></td>
+                      <td><?= $donHang['ten_nguoi_nhan'] ?></td>
+                      <td><?= $donHang['sdt_nguoi_nhan'] ?></td>
+                      <td><?= $donHang['ngay_dat'] ?></td>
+                      <td><?= $donHang['tong_tien'] ?></td>
+                      
+                      <td><span class="badge text-bg-<?= $donHang['ten_trang_thai'] ?>"><?= $donHang['ten_trang_thai'] ?></span></td>
                       <td>
                         <div class="btn-group">
-                          <a href="<?= BASE_URL_ADMIN . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>"><button class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
-                          <a href="<?= BASE_URL_ADMIN . '?act=form-sua-san-pham&id_san_pham=' . $sanPham['id'] ?>"><button class="btn btn-warning"><i class="fa fa-cog" aria-hidden="true"></i></button></a>
-                          <a href="<?= BASE_URL_ADMIN . '?act=xoa-san-pham&id_san_pham=' . $sanPham['id'] ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này ?')"><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
+                        <a href="<?= BASE_URL_ADMIN . '?act=chi-tiet-don-hang&id_don_hang=' . $sanPham['id'] ?>"><button class="btn btn-primary"><i class="far fa-eye"></i></button></a>
+                        <a href="<?= BASE_URL_ADMIN . '?act=form-sua-don-hang&id_don_hang=' . $sanPham['id'] ?>"><button class="btn btn-warning"><i class="fas fa-cogs"></i></button></a>
                         </div>
                       </td>
                     </tr>
@@ -77,11 +70,11 @@
                 <tfoot>
                   <tr>
                     <th>STT</th>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Ảnh Sản Phẩm</th>
-                    <th>Giá</th>
-                    <th>Số Lượng</th>
-                    <th>Danh Mục</th>
+                    <th>Mã đơn hàng</th>
+                    <th>Tên người nhận</th>
+                    <th>Số Điện Thoại</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
                     <th>Trạng Thái</th>
                     <th>Thao Tác</th>
                 </tfoot>

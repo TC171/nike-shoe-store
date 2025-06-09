@@ -78,7 +78,7 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>STT</th>
                                     <th>Tên người bình luận</th>
                                     <th>Nội dung</th>
                                     <th>Ngày đăng</th>

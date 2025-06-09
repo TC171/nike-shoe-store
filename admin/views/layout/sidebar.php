@@ -24,32 +24,14 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-            <li class="nav-item">
-            <a href="../widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
-            </a>
-          </li>
+            <li class="nav-item"><a href="../widgets.html" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a></li>
 
-          <li class="nav-item">
-            <a href="<?= BASE_URL_ADMIN. '?act=danh-muc' ?>" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Danh Mục Sản Phẩm
-              </p>
-            </a>
-          </li>
+          <li class="nav-item"><a href="<?= BASE_URL_ADMIN. '?act=danh-muc' ?>" class="nav-link"><i class="nav-icon fas fa-th"></i><p>Danh Mục Sản Phẩm </p></a></li>
 
-          <li class="nav-item">
-            <a href="<?= BASE_URL_ADMIN. '?act=san-pham' ?>" class="nav-link">
-              <i class="nav-icon fas fa-shoe-prints "></i>
-              <p>
-                Sản Phẩm
-              </p>
-            </a>
-          </li>
+          <li class="nav-item"><a href="<?= BASE_URL_ADMIN. '?act=san-pham' ?>" class="nav-link"><i class="nav-icon fas fa-shoe-prints "></i><p>Sản Phẩm</p></a></li>
+
+          <li class="nav-item"><a href="<?= BASE_URL_ADMIN. '?act=don-hang' ?>" class="nav-link"><i class="nav-icon fas fa-file-invoice-dollar "></i><p>Đơn Hàng</p></a></li>
+
 
         </ul>
       </nav>
