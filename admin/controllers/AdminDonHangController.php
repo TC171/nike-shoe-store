@@ -13,6 +13,16 @@ class AdminDonHangController
         $listDonHang = $this->modelDonHang->getAllDonHang();
         require_once './views/donhang/listDonHang.php';
     }
+
+    public function detailDonHang(){
+        $don_hang_id = $_GET['id_don_hang'] ?? '';
+        // layas thong tin don hang o bang don_hangs
+        $donHang = $this->modelDonHang->getDetailDonHang($don_hang_id);
+        // lay danh sach san pham trong don hang o bang chi_tiet_don_hangs
+        $sanPhamDonHang = $this->modelDonHang->getListSpDonHang($don_hang_id);
+        
+        require_once './views/donhang/detailDonHang.php';
+    }
     //     public function formEditSanPham()
     // {
     //     $id=$_GET['id_san_pham'];
