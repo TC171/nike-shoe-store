@@ -172,6 +172,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                            
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer text-center">
@@ -209,7 +210,7 @@
         $('#faqs tbody').append(html);
         faqs_row++;
     }
-    function removeRow(rowId,imgId) {
+    function removeRow(rowId, imgId) {
         $('#faqs-row-' + rowId).remove();
         if(imgId !== null ){
             var imgDeleteInput = document.getElementById('img_delete')

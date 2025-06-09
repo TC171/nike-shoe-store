@@ -68,10 +68,10 @@ class AdminSanPhamController
             $_SESSION['error'] = $errors; 
 
             if(empty($errors)){
-                $san_pham_id = $this->modelSanPham->InsertSanPham( $ten_san_pham, $gia_san_pham, $gia_khuyen_mai, $so_luong, $ngay_nhap, $danh_muc_id, $trang_thai, $mo_ta,$file_thumb); 
+                $san_pham_id = $this->modelSanPham->insertSanPham( $ten_san_pham, $gia_san_pham, $gia_khuyen_mai, $so_luong, $ngay_nhap, $danh_muc_id, $trang_thai, $mo_ta,$file_thumb); 
                 //xử lí thêm album ảnh sản phẩm img_array
                 if (!empty($img_array['name'])) {
-                    foreach ($img_array['name'] as $key => $value) {
+                    foreach ($img_array['name'] as $key=>$value) {
                         $file = [
                             'name' => $img_array['name'][$key],
                             'type' => $img_array['type'][$key],
@@ -79,8 +79,8 @@ class AdminSanPhamController
                             'error' => $img_array['error'][$key],
                             'size' => $img_array['size'][$key],
                         ];
-                        $link_hinh_anh = uploadFile( $file, './uploads/' );
-                        $san_pham_id = $this->modelSanPham->InsertAlbumSanPham($san_pham_id,$link_hinh_anh);
+                        $link_hinh_anh = uploadFile( $file, './uploads/');
+                        $this->modelSanPham->insertAlbumAnhSanPham($san_pham_id,$link_hinh_anh);
                     }
                 }
                 header("Location: " . BASE_URL_ADMIN . '?act=san-pham') ;
@@ -186,7 +186,7 @@ class AdminSanPhamController
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $san_pham_id = $_POST['san_pham_id'] ?? '';
             $listAnhSanPhamCurrent = $this->modelSanPham->getListAnhSanPham($san_pham_id) ;
-            $img_array = $$_FILES['img_array'];
+            $img_array = $_FILES['img_array'];
             $img_delete = isset($_POST['img_delete']) ? explode(',',$_POST['img_delete']) : [] ;
             $current_img_ids = $_POST['current_img_ids'] ?? [];
 
@@ -208,7 +208,7 @@ class AdminSanPhamController
                     $this->modelSanPham->updateAnhSanPham($file_info['id'], $file_info['file']);
                     deleteFile($old_file);
                 }else{
-                    $this->modelSanPham->insertAlbumSanPham($san_pham_id, $file_info['file']);
+                    $this->modelSanPham->insertAlbumAnhSanPham($san_pham_id, $file_info['file']);
                 }
             }
 
@@ -226,13 +226,38 @@ class AdminSanPhamController
         }
 
     }
-    //     public function deleteDanhMuc(){
-    //     $id=$_GET['id_danh_muc'];
-    //     $danhMuc = $this->modelDanhMuc->getDetailDanhMuc($id);
-    //     if($danhMuc){
-    //         $this->modelDanhMuc->destroyDanhMuc($id);
-    //     }
-    //     header("Location: " . BASE_URL_ADMIN . '?act=danh-muc') ;
-    //     exit();
-    // }
+        public function deleteSanPham()
+        {
+        $id = $_GET['id_san_pham'];
+        $sanPham = $this->modelSanPham->getDetailSanPham($id);
+
+        $listAnhSanPham = $this->modelSanPham->getListAnhSanPham($id);
+
+        if($sanPham){
+            deleteFile($sanPham['hinh_anh']);
+            $this->modelSanPham->destroySanPham($id);
+        }
+        if ($listAnhSanPham) {
+            foreach ($listAnhSanPham as $key => $anhSP) {
+                deleteFile($anhSP['link_hinh_anh']);
+                $this->modelSanPham->destroyAnhSanPham($anhSP['id']);
+            }
+        }
+        header("Location: " . BASE_URL_ADMIN . '?act=san-pham') ;
+        exit();
+    }
+
+    public function detailSanPham()
+    {
+        $id=$_GET['id_san_pham'];
+        $sanPham = $this->modelSanPham->getDetailSanPham($id);
+
+        $listAnhSanPham = $this->modelSanPham->getListAnhSanPham($id);
+
+        if($sanPham){
+            require_once './views/sanpham/detailSanPham.php';
+        }else {
+            header("Location: " . BASE_URL_ADMIN . '?act=san-pham') ;exit();
+        }
+    }
 }
