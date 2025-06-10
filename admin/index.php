@@ -8,6 +8,7 @@ require_once '../commons/function.php'; // Hàm hỗ trợ
 require_once './controllers/AdminDanhMucController.php';
 require_once './controllers/AdminSanPhamController.php';
 require_once './controllers/AdminDonHangController.php';
+require_once './controllers/AdminBaoCaoThongKeController.php';
 require_once './controllers/AdminTaiKhoanController.php';
 
 // Require toàn bộ file Models
@@ -18,10 +19,16 @@ require_once './models/AdminTaiKhoan.php';
 
 // Route
 $act = $_GET['act'] ?? '/';
+// if ($act !== 'login-admin' && $act !== 'check-login-admin' && $act !== 'logout-admin' ) {
+//     checkLoginAdmin();
+// }
 
 // Để bảo bảo tính chất chỉ gọi 1 hàm Controller để xử lý request thì mình sử dụng match
 
 match ($act) {
+    // route báo cáo thống kê - trang chủ
+    '/' => (new AdminBaoCaoThongKeController())->home(),
+
     // route danh mục
     'danh-muc' => (new AdminDanhMucController())->danhSachDanhMuc(),
     'them-danh-muc' => (new AdminDanhMucController())->postAddDanhmuc(),
@@ -53,5 +60,9 @@ match ($act) {
     'form-them-quan-tri' => (new AdminTaiKhoanController())-> formAddQuanTri(),
     'them-quan-tri' => (new AdminTaiKhoanController())-> postAddQuanTri(),
      
+    //Route auth  
+    'login-admin' => (new AdminTaiKhoanController())-> formLogin(),
+    'check-login-admin' => (new AdminTaiKhoanController())->login(),
+    'logout-admin' => (new AdminTaiKhoanController())->logout(),
     
 };

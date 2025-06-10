@@ -54,10 +54,49 @@
                 $_SESSION ['flash'] = true;
                 header("Location: " . BASE_URL_ADMIN . '?act=form-them-quan-tri') ;
                 exit();
-            }
+            }  
+        }
+    }
 
+
+    public function formLogin(){
+        require_once './views/auth/formLogin.php';
+
+        deleteSessionError();
         
     }
+
+    public function login(){
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            //LẤY EMAIL VÀ PASS GỬI LÊN TỪ FORM
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']);
+            // xử lí kiểm tra thông tin
+            $user = $this->modelTaiKhoan->checkLogin($email,$password);
+
+            if ($user == $email ) { //truong hop dang nhap thanh cong 
+                $_SESSION['user_admin'] = $user;
+                
+                
+                header("location: " . BASE_URL_ADMIN);
+                exit();
+            }else
+            //luu loi vao session
+            $_SESSION['error'] = $user;
+            $_SESSION['flash'] = true;
+            header("location: ". BASE_URL_ADMIN . '?act=login-admin');
+            exit();
+        }
     }
+    
+    public function logout(){
+        if (isset($_SESSION['user_admin'])) {
+            unset($_SESSION['user_admin']);
+            header("location: ". BASE_URL_ADMIN . '?act=login-admin');
+        }
+    }
+
+
+
 } 
  ?>
