@@ -57,7 +57,7 @@
                       <td><?= $quanTri['email'] ?></td>
                       <td><?= $quanTri['so_dien_thoai'] ?></td>
                       <td><?= $quanTri['trang_thai'] == 1 ? 'Active':'Inactive' ?></td>
-                      <td><?= $quanTri['mo_ta'] ?></td>
+                      <!-- <td><?= $quanTri['mo_ta'] ?></td> -->
 
 
                       <td>

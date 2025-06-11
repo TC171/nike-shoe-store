@@ -51,19 +51,31 @@
                                         <button class="header-search-btn"><i class="pe-7s-search"></i></button>
                                     </form>
                                 </div>
+                                
                                 <div class="header-configure-area">
+                                    
                                     <ul class="nav justify-content-end">
+                                        <label for="">
+                                            <?php
+                                            if (isset($_SESSION['user_client'])) {
+                                                echo 'Xin Chào ' . $_SESSION['user_client'];
+                                            }
+                                            ?>
+                                        </label>
                                         <li class="user-hover">
                                             <a href="#">
                                                 <i class="pe-7s-user"></i>
                                             </a>
                                             <ul class="dropdown-list">
-                                                <li><a href="login-register.html">Đăng Nhập</a></li>
-                                                <li><a href="login-register.html">Đăng Ký</a></li>
-                                                <li><a href="my-account.html">Tài Khoản</a></li>
+                                                <?php if (!isset($_SESSION['user_client'])) { ?>
+                                                        <li><a href="<?= BASE_URL . '?act=login' ?>">Đăng Nhập</a></li>
+                                                <?php } else {?>
+                                                    
+                                                    <li><a href="my-account.html">Tài Khoản</a></li>
+                                                <?php }?>
                                             </ul>
                                         </li>
-                                        
+                                        <hr>
                                         <li>
                                             <a href="#" class="minicart-btn">
                                                 <i class="pe-7s-shopbag"></i>

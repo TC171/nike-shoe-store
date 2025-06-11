@@ -46,9 +46,7 @@ class AdminSanPhamController
             if(empty($gia_san_pham)){
                 $errors['gia_san_pham'] = 'Giá Sản Phẩm Không Được Để Trống';
             }
-            if(empty($gia_khuyen_mai)){
-                $errors['gia_khuyen_mai'] = 'Giá Khuyến Mãi Không Được Để Trống';
-            }
+            
             if(empty($so_luong)){
                 $errors['so_luong'] = 'Số Lượng Không Được Để Trống';
             }

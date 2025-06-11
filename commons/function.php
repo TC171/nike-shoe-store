@@ -43,7 +43,7 @@ function deleteSessionError(){
     if (isset($_SESSION['flash'])) {
         unset($_SESSION['flash']);
         session_unset();
-        session_destroy();
+        // session_destroy();
     }
 }
 //upload + update album ảnh
@@ -59,4 +59,19 @@ function uploadFileAlbum($file, $folderUpload , $key){
 // format date 
 function formatDate($date) {
     echo $newDate = date('d-m-Y', strtotime($date));
+}
+
+
+
+
+//
+function checkLoginAdmin(){
+    if (!isset($_SESSION['user_admin'])) {
+        header("Location: " . BASE_URL_ADMIN . '?act=login-admin' );
+        exit();
+    }
+}
+
+function formatPrice($price){
+    return number_format($price ,0,',','.');
 }

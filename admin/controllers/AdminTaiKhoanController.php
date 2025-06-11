@@ -82,7 +82,7 @@
                 exit();
             }else
             //luu loi vao session
-            $_SESSION['error'] = $user;
+            $_SESSION['error'] = $user ;
             $_SESSION['flash'] = true;
             header("location: ". BASE_URL_ADMIN . '?act=login-admin');
             exit();
@@ -96,7 +96,44 @@
         }
     }
 
+    public function formEditCaNhanQuanTri(){
+        $email=$_SESSION['user_admin'];
+        $thongTin = $this->modelTaiKhoan->getTaiKhoanformEmail($email);
+        // var_dump($thongTin);die;
+        require_once './views/taikhoan/canhan/editCaNhan.php';
+        deleteSessionError();
+    }
 
+    public function postEditMatKhauCaNhan(){
+        if ($_SERVER(['REQUEST_METHOD'] == 'POST')) {
+            $old_pass = $_POST['old_pass'];
+            $new_pass = $_POST['new_pass'];
+            $confirm_pass = $_POST['confirm_pass'];
 
+        $user = $this->modelTaiKhoan->getTaiKhoanformEmail($_SESSION['user_admin']);
+        $checkPass = $old_pass === $user['mat_khau'];
+        $errors = [];
+        if (empty(!$checkPass)) {
+            $errors['old_pass'] = 'Mật Khẩu Hiện Tại Không Đúng';
+        }
+        if (empty($new_pass !== $confirm_pass)) {
+            $errors['confirm_pass'] = 'Mật Khẩu Không Khớp';
+        }
+        if (empty($old_pass)) {
+            $errors['old_pass'] = 'Vui Lòng Nhập Mật Khẩu Hiện Tại';
+        }
+        if (empty($new_pass)) {
+            $errors['new_pass'] = 'Vui Lòng Nhập Mật Khẩu Mới';
+        }
+        if (empty($confirm_pass)) {
+            $errors['confirm_pass'] = 'Vui Lòng Xác Nhận Lại Mật Khẩu';
+        }
+        $_SESSION['error'] = $errors;
+        if (!$errors) {
+            // $this->modelTaiKhoan->update
+        }
+
+        }
+    }
 } 
  ?>
