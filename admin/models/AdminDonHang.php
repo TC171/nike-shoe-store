@@ -92,53 +92,20 @@ class AdminDonHang{
         }
     }
 
-//     public function getDetailAnhSanPham($id){
-//         try {
-//             $sql = 'SELECT * FROM hinh_anh_san_phams WHERE id = :id';
-
-//             $stmt = $this->conn->prepare($sql);
-
-//             $stmt->execute([':id' =>$id]);
-//             return $stmt->fetch();
-//         } catch (Exception $e) {
-//             echo "lỗi" . $e->getMessage();
-//         }
-//     }
-    
-//     public function updateAnhSanPham($id,$new_file){
-//         try {
-//             $sql = ' UPDATE hinh_anh_san_phams
-//                     SET 
-//                         link_hinh_anh = :new_file
-                        
-//                     WHERE id = :id ';
+public function getDonHangFromKhachHang($id){
+        try {
+            $sql = 'SELECT don_hangs.*,trang_thai_don_hangs.ten_trang_thai FROM don_hangs
+            INNER JOIN trang_thai_don_hangs ON don_hangs.trang_thai_id = trang_thai_don_hangs.id
+            WHERE don_hangs.tai_khoan_id = :id
             
-//             $stmt = $this->conn->prepare($sql);
-//             $stmt->execute([
-//                 ':new_file' => $new_file,
-//                 ':id' => $id,
-                
-//             ]);
-//             //lấy id sản phẩm vừa thêm
-//             return true;
-//         } catch (Exception $e) {
-//             echo "lỗi" . $e->getMessage();
-//         }
-//     }
-//         public function destroyAnhSanPham($id){
-//         try {
-//             $sql = 'DELETE FROM hinh_anh_san_phams WHERE id = :id ';
-            
-//             $stmt = $this->conn->prepare($sql);
-//             $stmt->execute([
-//                 ':id' => $id
-//             ]);
-//             //lấy id sản phẩm vừa thêm
-//             return true;
-//         } catch (Exception $e) {
-//             echo "lỗi" . $e->getMessage();
-//         }
-//     }
+            ';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['id'=>$id]);
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            echo "lỗi" . $e->getMessage();
+        }
+    }
 
 }
 

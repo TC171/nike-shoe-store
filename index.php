@@ -11,6 +11,7 @@ require_once './controllers/HomeController.php';
 require_once './models/Student.php';
 require_once './models/SanPham.php';
 require_once './models/TaiKhoan.php';
+require_once './models/GioHang.php';
 
 
 // Route
