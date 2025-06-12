@@ -73,4 +73,21 @@ class HomeController
         $sanPham_id = $_POST['san_pham_id'];
         $so_luong = $_POST['so_luong'];
     }
+
+
+    public function thanhToan(){
+        if (isset($_SESSION['user_client'])) {
+            $user = $this->modelTaiKhoan->getTaiKhoanFromEmail($_SESSION['user_client']);
+            $gioHang = $this->modelGioHang->getGioHangFromUser($user)['id'];
+            if (!$gioHang) {
+                $gioHangId = $this->modelGioHang->getDetailGioHang($user)['id'];
+                $gioHang = ['id'=> $gioHangId ];
+                $chiTietGioHang = $this->modelGioHang->getGioHangFromUser($mail)['id'];
+            }else{
+                $chiTietGioHang = $this->modelGioHang->getGioHangFromUser($mail)['id'];
+            }
+            require_once './views/thanhToan.php';
+
+        }
+    }
 }

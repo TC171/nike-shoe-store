@@ -1,4 +1,5 @@
 <?php
+// controller hiển thị AdminDonHangController ( sơn)
 class AdminDonHangController
 {
 
@@ -15,101 +16,74 @@ class AdminDonHangController
     }
 
     public function detailDonHang(){
-        $don_hang_id = $_GET['id_don_hang'] ?? '';
+        $don_hang_id = $_GET['id_don_hang'];
+        
         // layas thong tin don hang o bang don_hangs
         $donHang = $this->modelDonHang->getDetailDonHang($don_hang_id);
+
         // lay danh sach san pham trong don hang o bang chi_tiet_don_hangs
         $sanPhamDonHang = $this->modelDonHang->getListSpDonHang($don_hang_id);
+        $listTrangThaiDonHang = $this->modelDonHang->getAllTrangThaiDonHang();
         
         require_once './views/donhang/detailDonHang.php';
     }
-    //     public function formEditSanPham()
-    // {
-    //     $id=$_GET['id_san_pham'];
-    //     $sanPham = $this->modelSanPham->getDetailSanPham($id);
-    //     $listAnhSanPham = $this->modelSanPham->getListAnhSanPham($id);
-    //     $listDanhMuc = $this->modelDanhMuc->getAllDanhMuc();
-    //     if($sanPham){
-    //         require_once './views/sanpham/editSanPham.php';
-    //         deleteSessionError();
-    //     }else {
-    //         header("Location: " . BASE_URL_ADMIN . '?act=san-pham') ;exit();
-    //     }
-    // }
+
+        public function formEditDonHang()
+    {
+        $id=$_GET['id_don_hang'];
+        $donHang = $this->modelDonHang->getDetailDonHang($id);
+        $listTrangThaiDonHang = $this->modelDonHang->getAllTrangThaiDonHang();
+        if($donHang){
+            require_once './views/donhang/editDonHang.php';
+            deleteSessionError();
+        }else {
+            header("Location: " . BASE_URL_ADMIN . '?act=don-hang') ;exit();
+        }
+    }
     
-    // public function postEditSanPham()
-    // {
-    //     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    //         $san_pham_id = $_POST['san_pham_id'] ??'';
-    //         //Truy Vấn
-    //         $sanPhamOld = $this->modelSanPham->getDetailSanPham($san_pham_id);
-    //         $old_file = $sanPhamOld['hinh_anh']; 
+    public function postEditDonHang()
+    {
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $don_hang_id = $_POST['don_hang_id'] ??'';
+            //Truy Vấn
+           
+             $ten_nguoi_nhan = $_POST['ten_nguoi_nhan'] ?? '';
+              $sdt_nguoi_nhan = $_POST['sdt_nguoi_nhan'] ?? '';
+               $email_nguoi_nhan = $_POST['email_nguoi_nhan'] ?? '';
+                $dia_chi_nguoi_nhan = $_POST['dia_chi_nguoi_nhan'] ?? '';
+                 $ghi_chu = $_POST['ghi_chu'] ?? '';
+                  $trang_thai_id = $_POST['trang_thai_id'] ?? '';  
+            $errors=[];
 
-    //         $ten_san_pham = $_POST['ten_san_pham'] ?? '';
-    //         $gia_san_pham = $_POST['gia_san_pham'] ?? '';
-    //         $gia_khuyen_mai = $_POST['gia_khuyen_mai'] ?? '';
-    //         $so_luong = $_POST['so_luong'] ?? '';
-    //         $ngay_nhap = $_POST['ngay_nhap'] ?? '';
-    //         $danh_muc_id = $_POST['danh_muc_id'] ?? '';
-    //         $trang_thai = $_POST['trang_thai'] ?? '';
-    //         $mo_ta = $_POST['mo_ta'] ?? '';
+            if(empty($ten_nguoi_nhan)){
+                $errors['ten_san_pham'] = 'Tên Sản Phẩm Không Được Để Trống';
+            }
+            if(empty($sdt_nguoi_nhan)){
+                $errors['sdt_nguoi_nhan'] = 'Số Điện Thoại Không Được Để Trống';
+            }
+            if(empty($email_nguoi_nhan)){
+                $errors['email_nguoi_nhan'] = ' Email Không Được Để Trống';
+            }
+            if(empty($dia_chi_nguoi_nhan)){
+                $errors['dia_chi_nguoi_nhan'] = 'Địa chỉ Không Được Để Trống';
+            }
+            if(empty($trang_thai_id)){
+                $errors['trang_thai_id'] = 'Trạng thái đơn hàng';
+            }
+            $_SESSION['error'] = $errors; 
 
-    //         $hinh_anh = $_FILES['hinh_anh'] ?? null;
-    //         // $file_thumb = uploadFile($hinh_anh , './uploads/');
-    //         // $img_array = $_FILES['img_array']; //mảng hình ảnh
-
-    //         $errors=[];
-
-    //         if(empty($ten_san_pham)){
-    //             $errors['ten_san_pham'] = 'Tên Sản Phẩm Không Được Để Trống';
-    //         }
-    //         if(empty($gia_san_pham)){
-    //             $errors['gia_san_pham'] = 'Giá Sản Phẩm Không Được Để Trống';
-    //         }
-    //         if(empty($gia_khuyen_mai)){
-    //             $errors['gia_khuyen_mai'] = 'Giá Khuyến Mãi Không Được Để Trống';
-    //         }
-    //         if(empty($so_luong)){
-    //             $errors['so_luong'] = 'Số Lượng Không Được Để Trống';
-    //         }
-    //         if(empty($ngay_nhap)){
-    //             $errors['ngay_nhap'] = 'Ngày Nhập Không Được Để Trống';
-    //         }
-    //         if(empty($danh_muc_id)){
-    //             $errors['danh_muc_id'] = 'Danh Mục ID Phải Chọn';
-    //         }
-    //         if(empty($trang_thai)){
-    //             $errors['trang_thai'] = 'Trạng Thái Phải Chọn';
-    //         }
-    //         if($hinh_anh['error'] !== 0){
-    //             $errors['hinh_anh'] = 'Chưa Tải Ảnh Lên';
-    //         }
-            
-    //         $_SESSION['error'] = $errors; 
-
-    //         //logic sửa ảnh
-    //         if (isset($hinh_anh) && $hinh_anh['error'] == UPLOAD_ERR_OK) {
-    //             //upload ảnh mới lên
-    //             $new_file = uploadFile($hinh_anh, './uploads');
-
-    //             if (!empty($old_file)) {    //Nếu có ảnh cũ thì xóa đi
-    //                 deleteFile($old_file);
-    //             }
-    //         }else{
-    //             $new_file = $old_file;
-    //         }
-
-    //         if(empty($errors)){
-    //             $this->modelSanPham->UpdateSanPham( $san_pham_id,$ten_san_pham, $gia_san_pham, $gia_khuyen_mai, $so_luong, $ngay_nhap, $danh_muc_id, $trang_thai, $mo_ta, $new_file);  
-    //             header("Location: " . BASE_URL_ADMIN . '?act=san-pham') ;
-    //             exit();
-    //         }else{
-    //             $_SESSION['flash'] = true;
-    //             header("Location: " . BASE_URL_ADMIN . '?act=form-sua-san-pham&id_san_pham=' . $san_pham_id) ;
-    //             exit();
-    //         }
-    //     }
-    // }
+            if(empty($errors)){
+                $this->modelDonHang->updateDonHang($don_hang_id, $ten_nguoi_nhan,$sdt_nguoi_nhan, $email_nguoi_nhan, $dia_chi_nguoi_nhan,$ghi_chu, $trang_thai_id);  
+              
+                header("Location: " . BASE_URL_ADMIN . '?act=don-hang') ;
+                exit();
+            }else{
+                $_SESSION['flash'] = true;
+                header("Location: " . BASE_URL_ADMIN . '?act=form-sua-don-hang&id_don_hang=' . $don_hang_id) ;
+                exit();
+            }
+        }
+    }
 
     // public function postEditAnhSanPham() {
     //     if ($_SERVER['REQUEST_METHOD'] == 'POST') {

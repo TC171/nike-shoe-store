@@ -1,4 +1,3 @@
-<!-- Vũ tất cả  -->
 <?php   require_once 'layout/header.php'?>
 <?php   require_once 'layout/menu.php'?>
 
@@ -241,11 +240,6 @@
     </section>
     <!-- related products area end -->
 </main>
-
-
-
-
-
 
 <!-- offcanvas mini cart start -->
 <div class="offcanvas-minicart-wrapper">

@@ -1,4 +1,5 @@
 <?php
+// hiển thị đơn hàng ( sơn)
 class AdminDonHang{
     public $conn ;
     public function __construct() {
@@ -16,10 +17,25 @@ class AdminDonHang{
         }
     }
 
+    public function getAllTrangThaiDonHang(){
+        try {
+            $sql = 'SELECT * FROM trang_thai_don_hangs';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            echo "lỗi" . $e->getMessage();
+        }
+    }
+
     public function getDetailDonHang($id){
         try {
-            $sql = 'SELECT don_hangs.*,trang_thai_don_hangs.ten_trang_thai, tai_khoans.ho_ten, tai_khoans.email,tai_khoans.so_dien_thoai
-            ,phuong_thuc_thanh_toans.ten_phuong_thuc
+            $sql = 'SELECT don_hangs.*,
+            trang_thai_don_hangs.ten_trang_thai,
+            tai_khoans.ho_ten,
+            tai_khoans.email,
+            tai_khoans.so_dien_thoai,
+            phuong_thuc_thanh_toans.ten_phuong_thuc
              FROM don_hangs 
             INNER JOIN trang_thai_don_hangs ON don_hangs.trang_thai_id = trang_thai_don_hangs.id
             INNER JOIN tai_khoans ON don_hangs.tai_khoan_id = tai_khoans.id
@@ -46,153 +62,83 @@ class AdminDonHang{
             echo "lỗi" . $e->getMessage();
         }
     }
-    // public function InsertSanPham($ten_san_pham, $gia_san_pham, $gia_khuyen_mai, $so_luong, $ngay_nhap, $danh_muc_id, $trang_thai, $mo_ta, $hinh_anh){
-    //     try {
-    //         $sql = 'INSERT INTO san_phams (ten_san_pham, gia_san_pham, gia_khuyen_mai, so_luong, ngay_nhap, danh_muc_id, trang_thai, mo_ta, hinh_anh) 
-    //         VALUES (:ten_san_pham, :gia_san_pham, :gia_khuyen_mai, :so_luong, :ngay_nhap, :danh_muc_id, :trang_thai, :mo_ta, :hinh_anh) ';
-    //         $stmt = $this->conn->prepare($sql);
-    //         $stmt->execute([
-    //             ':ten_san_pham' => $ten_san_pham,
-    //             ':gia_san_pham' => $gia_san_pham,
-    //             ':gia_khuyen_mai' => $gia_khuyen_mai,
-    //             ':so_luong' => $so_luong,
-    //             ':ngay_nhap' => $ngay_nhap,
-    //             ':danh_muc_id' => $danh_muc_id,
-    //             ':trang_thai' => $trang_thai,
-    //             ':mo_ta' => $mo_ta,
-    //             ':hinh_anh' => $hinh_anh,
-                
-    //         ]);
-    //         //lấy id sản phẩm vừa thêm
-    //         return $this->conn->lastInsertId();
-    //     } catch (Exception $e) {
-    //         echo "lỗi" . $e->getMessage();
-    //     }
-    // }
-    // public function insertAlbumSanPham($san_pham_id,$link_hinh_anh){
-    //     try {
-    //         $sql = 'INSERT INTO hinh_anh_san_phams (san_pham_id,link_hinh_anh) 
-    //         VALUES (:san_pham_id,:link_hinh_anh) ';
-    //         $stmt = $this->conn->prepare($sql);
-    //         $stmt->execute([
-    //             ':san_pham_id' => $san_pham_id,
-    //             ':link_hinh_anh' => $link_hinh_anh,
-    //         ]);
-    //         //lấy id sản phẩm vừa thêm
-    //         return true;
-    //     } catch (Exception $e) {
-    //         echo "lỗi" . $e->getMessage();
-    //     }
-    // }
 
-    // public function getDetailSanPham($id){
-    //     try {
-    //         $sql = 'SELECT * FROM san_phams WHERE id = :id';
-    //         $stmt = $this->conn->prepare($sql);
-    //         $stmt->execute([
-    //             ':id' =>$id
-    //         ]);
-    //         return $stmt->fetch();
-    //     } catch (Exception $e) {
-    //         echo "lỗi" . $e->getMessage();
-    //     }
-    // }
-    // public function getListAnhSanPham($id){
-    //     try {
-    //         $sql = 'SELECT * FROM hinh_anh_san_phams WHERE san_pham_id = :id';
-    //         $stmt = $this->conn->prepare($sql);
-    //         $stmt->execute([
-    //             ':id' =>$id
-    //         ]);
-    //         return $stmt->fetchAll();
-    //     } catch (Exception $e) {
-    //         echo "lỗi" . $e->getMessage();
-    //     }
-    // }
-
-    // public function UpdateSanPham($san_pham_id,$ten_san_pham, $gia_san_pham, $gia_khuyen_mai, $so_luong, $ngay_nhap, $danh_muc_id, $trang_thai, $mo_ta, $hinh_anh){
-    //     try {
-    //         $sql = ' UPDATE san_phams
-    //                 SET 
-    //                     ten_san_pham = :ten_san_pham,
-    //                     gia_san_pham = :gia_san_pham,
-    //                     gia_khuyen_mai = :gia_khuyen_mai,
-    //                     so_luong = :so_luong,
-    //                     ngay_nhap = :ngay_nhap,
-    //                     danh_muc_id = :danh_muc_id,
-    //                     trang_thai = :trang_thai,
-    //                     mo_ta = :mo_ta,
-    //                     hinh_anh = :hinh_anh
-    //                 WHERE id = :id ';
+    public function updateDonHang($id,$ten_nguoi_nhan,$sdt_nguoi_nhan, $email_nguoi_nhan, $dia_chi_nguoi_nhan,$ghi_chu, $trang_thai_id){
+        try {
+            $sql =' UPDATE don_hangs
+                    SET 
+                        ten_nguoi_nhan = :ten_nguoi_nhan,
+                        sdt_nguoi_nhan = :sdt_nguoi_nhan,
+                        email_nguoi_nhan = :email_nguoi_nhan,
+                        dia_chi_nguoi_nhan = :dia_chi_nguoi_nhan,
+                        ghi_chu = :ghi_chu,
+                        trang_thai_id = :trang_thai_id
+                    WHERE id = :id ';
             
-    //         $stmt = $this->conn->prepare($sql);
-    //         $stmt->execute([
-    //             ':ten_san_pham' => $ten_san_pham,
-    //             ':gia_san_pham' => $gia_san_pham,
-    //             ':gia_khuyen_mai' => $gia_khuyen_mai,
-    //             ':so_luong' => $so_luong,
-    //             ':ngay_nhap' => $ngay_nhap,
-    //             ':danh_muc_id' => $danh_muc_id,
-    //             ':trang_thai' => $trang_thai,
-    //             ':mo_ta' => $mo_ta,
-    //             ':hinh_anh' => $hinh_anh,
-    //             ':id' => $san_pham_id,
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([
+                ':ten_nguoi_nhan' => $ten_nguoi_nhan,
+                ':sdt_nguoi_nhan' => $sdt_nguoi_nhan,
+                ':email_nguoi_nhan' => $email_nguoi_nhan,
+                ':dia_chi_nguoi_nhan' => $dia_chi_nguoi_nhan,
+                ':ghi_chu' => $ghi_chu,
+                ':trang_thai_id' => $trang_thai_id,
+                'id' => $id
                 
-    //         ]);
-    //         //lấy id sản phẩm vừa thêm
-    //         return true;
-    //     } catch (Exception $e) {
-    //         echo "lỗi" . $e->getMessage();
-    //     }
-    // }
+            ]);
+            return true;
+        } catch (Exception $e) {
+            echo "lỗi" . $e->getMessage();
+        }
+    }
 
-    // public function getDetailAnhSanPham($id){
-    //     try {
-    //         $sql = 'SELECT * FROM hinh_anh_san_phams WHERE id = :id';
+//     public function getDetailAnhSanPham($id){
+//         try {
+//             $sql = 'SELECT * FROM hinh_anh_san_phams WHERE id = :id';
 
-    //         $stmt = $this->conn->prepare($sql);
+//             $stmt = $this->conn->prepare($sql);
 
-    //         $stmt->execute([':id' =>$id]);
-    //         return $stmt->fetch();
-    //     } catch (Exception $e) {
-    //         echo "lỗi" . $e->getMessage();
-    //     }
-    // }
+//             $stmt->execute([':id' =>$id]);
+//             return $stmt->fetch();
+//         } catch (Exception $e) {
+//             echo "lỗi" . $e->getMessage();
+//         }
+//     }
     
-    // public function updateAnhSanPham($id,$new_file){
-    //     try {
-    //         $sql = ' UPDATE hinh_anh_san_phams
-    //                 SET 
-    //                     link_hinh_anh = :new_file
+//     public function updateAnhSanPham($id,$new_file){
+//         try {
+//             $sql = ' UPDATE hinh_anh_san_phams
+//                     SET 
+//                         link_hinh_anh = :new_file
                         
-    //                 WHERE id = :id ';
+//                     WHERE id = :id ';
             
-    //         $stmt = $this->conn->prepare($sql);
-    //         $stmt->execute([
-    //             ':new_file' => $new_file,
-    //             ':id' => $id,
+//             $stmt = $this->conn->prepare($sql);
+//             $stmt->execute([
+//                 ':new_file' => $new_file,
+//                 ':id' => $id,
                 
-    //         ]);
-    //         //lấy id sản phẩm vừa thêm
-    //         return true;
-    //     } catch (Exception $e) {
-    //         echo "lỗi" . $e->getMessage();
-    //     }
-    // }
-    //     public function destroyAnhSanPham($id){
-    //     try {
-    //         $sql = 'DELETE FROM hinh_anh_san_phams WHERE id = :id ';
+//             ]);
+//             //lấy id sản phẩm vừa thêm
+//             return true;
+//         } catch (Exception $e) {
+//             echo "lỗi" . $e->getMessage();
+//         }
+//     }
+//         public function destroyAnhSanPham($id){
+//         try {
+//             $sql = 'DELETE FROM hinh_anh_san_phams WHERE id = :id ';
             
-    //         $stmt = $this->conn->prepare($sql);
-    //         $stmt->execute([
-    //             ':id' => $id
-    //         ]);
-    //         //lấy id sản phẩm vừa thêm
-    //         return true;
-    //     } catch (Exception $e) {
-    //         echo "lỗi" . $e->getMessage();
-    //     }
-    // }
+//             $stmt = $this->conn->prepare($sql);
+//             $stmt->execute([
+//                 ':id' => $id
+//             ]);
+//             //lấy id sản phẩm vừa thêm
+//             return true;
+//         } catch (Exception $e) {
+//             echo "lỗi" . $e->getMessage();
+//         }
+//     }
 
 }
 
