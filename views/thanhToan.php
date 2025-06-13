@@ -113,10 +113,10 @@
                                                 <td>
                                                     <?php
                                                     $tongTien = 0;
-                                                    if ($sanPhm['gia_khuyen_mai']) {
-                                                        $tongTien = $sanPhm['gia_khuyen_mai'] * $sanPhm['so_luong'];
+                                                    if ($sanPham['gia_khuyen_mai']) {
+                                                        $tongTien = $sanPham['gia_khuyen_mai'] * $sanPham['so_luong'];
                                                     }else {
-                                                        $tongTien = $sanPhm['gia_san_pham'] * $sanPhm['so_luong'];
+                                                        $tongTien = $sanPham['gia_san_pham'] * $sanPham['so_luong'];
                                                     }
                                                     $tongGioHang += $tongTien;
                                                     echo formatPrice($tongTien) . 'đ';
@@ -127,12 +127,13 @@
                                             
                                         </tbody>
                                         <tfoot>
+                                            <tr><td>-</td><td>-</td></tr>
                                             <tr>
-                                                <td>Tổng</td>
+                                                <td>Tổng Tiền Sản Phẩm</td>
                                                 <td><strong><?= formatPrice($tongGioHang) . 'đ'; ?></strong></td>
                                             </tr>
                                             <tr>
-                                                <td>Phí Vận Chuyển</td>
+                                                <td>Phí Vận Chuyển </td>
                                                 <td class="d-flex justify-content-center">
                                                     <strong>30.000đ</strong>
                                                 </td>
@@ -154,26 +155,27 @@
                                             </div>
                                         </div>
                                         <div class="payment-method-details" data-method="cash">
-                                            <p>Thanh Toán Qua Ngân Hàng Hoặc Ví Điện Tử</p>
+                                            <p>Thanh Toán Khi Nhận Hàng</p>
                                         </div>
                                     </div>
                                     <div class="single-payment-method">
                                         <div class="payment-method-name">
                                             <div class="custom-control custom-radio">
                                                 <input type="radio" id="directbank" name="paymentmethod" value="bank" class="custom-control-input" />
-                                                <label class="custom-control-label" for="directbank">Direct Bank
-                                                    Transfer</label>
+                                                <label class="custom-control-label" for="directbank">Thanh Toán Qua Ngân Hàng Hoặc Ví Điện Tử</label>
                                             </div>
                                         </div>
                                         <div class="payment-method-details" data-method="bank">
-                                            <p>Khách Hàng</p>
+                                            <p>MOMO</p>
+                                            <p>Quét Mã QR</p>
+                                            <p>Zalo Pay</p>
                                         </div>
                                     </div>
                                     
                                     <div class="summary-footer-area">
                                         <div class="custom-control custom-checkbox mb-20">
                                             <input type="checkbox" class="custom-control-input" id="terms" required />
-                                            <label class="custom-control-label" for="terms">Xác Nhận Thông Tin <a href="index.html">terms and conditions.</a></label>
+                                            <label class="custom-control-label" for="terms">Tôi Đồng Ý Với Tất Cả <a href="index.html">Điều Khoản Và Điều Kiện</a></label>
                                         </div>
                                         <button type="submit" class="btn btn-sqr">Đặt Hàng</button>
                                     </div>
@@ -188,5 +190,7 @@
     </main>
 
 <?php
+    require_once 'layout/miniCart.php';
+
     require_once 'layout/footer.php';
 ?>

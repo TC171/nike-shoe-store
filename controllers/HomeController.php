@@ -92,27 +92,48 @@ class HomeController
                 if (!$checkSanPham) {
                 $this->modelGioHang->addDetailGioHang($gioHang['id'], $san_pham_id,$so_luong);
                 }
-                header("location:" . BASE_URL . '?act=gio_hang');
+                header("location:" . BASE_URL . '?act=gio-hang');
+                exit();
                 }else {
-                    var_dump('Chưa Đăng Nhập');die;
+                    header("location: ". BASE_URL . '?act=login');
                 }
         }
     }
 
+    public function gioHang(){
+        if (isset($_SESSION['user_client'])) {
+                $mail = $this->modelTaiKhoan->getTaiKhoanFromEmail($_SESSION['user_client']);
+                //lấy dữ liệu giỏ hàng người dùng 
+                $gioHang = $this->modelGioHang->getGioHangFromUser($mail['id']);
+                if (!$gioHang) {
+                    $gioHangId = $this->modelGioHang->addGioHang($mail['id']);
+                    $gioHang = ['id' => $gioHangId];
+                    $chiTietGioHang = $this->modelGioHang-> getDetailGioHang($gioHang['id']);
+                }else{
+                    $chiTietGioHang = $this->modelGioHang-> getDetailGioHang($gioHang['id']);
+                }
+                require_once './views/gioHang.php';
+            }else {
+                header("location: ". BASE_URL . '?act=login');
+            }
+    }
+
 
     public function thanhToan(){
-        if (isset($_SESSION['user_client'])) {
-            $user = $this->modelTaiKhoan->getTaiKhoanFromEmail($_SESSION['user_client']);
-            $gioHang = $this->modelGioHang->getGioHangFromUser($user)['id'];
-            if (!$gioHang) {
-                $gioHangId = $this->modelGioHang->getDetailGioHang($user)['id'];
-                $gioHang = ['id'=> $gioHangId ];
-                $chiTietGioHang = $this->modelGioHang->getGioHangFromUser($mail)['id'];
-            }else{
-                $chiTietGioHang = $this->modelGioHang->getGioHangFromUser($mail)['id'];
-            }
-            require_once './views/thanhToan.php';
+    if (isset($_SESSION['user_client'])) {
+        $user = $this->modelTaiKhoan->getTaiKhoanFromEmail($_SESSION['user_client']);
+        $gioHang = $this->modelGioHang->getGioHangFromUser($user['id']); // Sử dụng user['id']
 
+        if ($gioHang && isset($gioHang['id'])) {
+            $gioHangId = $gioHang['id'];
+        } else {
+            $gioHangId = $this->modelGioHang->getDetailGioHang($user)['id'];
+            $gioHang = ['id' => $gioHangId];
         }
+
+        $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHangId); // Sửa lại nơi lấy chi tiết giỏ hàng
+
+        require_once './views/thanhToan.php';
     }
+    }   
 }
