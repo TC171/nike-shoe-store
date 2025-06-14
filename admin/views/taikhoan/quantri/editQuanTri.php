@@ -59,7 +59,7 @@
                                     <label>Số điện thoại</label>
                                     <input type="text" class="form-control" name="so_dien_thoai" value="<?= $quanTri['so_dien_thoai'];?>" placeholder="Nhập SĐT">
                                     <?php if(isset($_SESSION['error']['so_dien_thoai'])) {  ?>
-                                            <p class="text-danger"><?= $_SESSION['error']['email']?></p>
+                                            <p class="text-danger"><?= $_SESSION['error']['so_dien_thoai']?></p>
                                     <?php } ?>
 
                                 </div>

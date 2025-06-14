@@ -5,11 +5,13 @@ class HomeController
     public $modelSanPham;
     public $modelTaiKhoan;
     public $modelGioHang;
+    public $modelDonHang;
 
     public function __construct(){
         $this->modelSanPham = new SanPham();
         $this->modelTaiKhoan = new TaiKhoan();
         $this->modelGioHang = new GioHang();
+        $this->modelDonHang = new DonHang();
     }
     public function home(){
         $listSanPham = $this->modelSanPham->getAllSanPham();
@@ -135,5 +137,53 @@ class HomeController
 
         require_once './views/thanhToan.php';
     }
-    }   
+    }
+     public function postThanhToan(){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $ten_nguoi_nhan = $_POST['ten_nguoi_nhan'];
+            $email_nguoi_nhan = $_POST['email_nguoi_nhan'];
+            $sdt_nguoi_nhan = $_POST['sdt_nguoi_nhan'];
+            $dia_chi_nguoi_nhan = $_POST['dia_chi_nguoi_nhan'];
+            $ghi_chu = $_POST['ghi_chu'];
+            $tong_tien = $_POST['tong_tien'];
+            $phuong_thuc_thanh_toan_id = $_POST['phuong_thuc_thanh_toan_id'];
+            
+
+
+
+
+            $ngay_dat = date('Y-m-d');
+            $trang_thai_id = 1;
+
+            $user = $this->modelTaiKhoan->getTaiKhoanFromEmail($_SESSION['user_client']);
+            $tai_khoan_id = $user['id'];
+
+            $ma_don_hang = rand(100000,999999);
+
+            $this->modelDonHang->addDonHang($tai_khoan_id,
+                                            $ten_nguoi_nhan,
+                                            $email_nguoi_nhan,
+                                            $sdt_nguoi_nhan,
+                                            $dia_chi_nguoi_nhan ,
+                                            $ghi_chu ,
+                                            $tong_tien,
+                                            $phuong_thuc_thanh_toan_id,
+                                            $ngay_dat,
+                                            $ma_don_hang,
+                                            $trang_thai_id
+            );
+            // Lấy Thông Tin Giỏ Hàng của người dùng
+            $gioHang = $this->modelGioHang->getGioHangFromUser($tai_khoan_id);
+
+            //Lưu Sản Phẩm Vào Chi TIết Đơn Hàng
+            if ($don_hang_id) {
+                $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHang['id']);
+                foreach($chiTietGioHang as $item){
+                    $donGia = $item['gia_khuyen_mai'] ?? $item['gia_khuyen_mai'];
+
+                    $this->modelDonHang->addChiTietDonHang($don_hang_id , $item['san_pham_id'] , $donGia , $item['so_luong'] , $donGia * $item['so_luong']);
+                }
+            }
+        }
+    }     
 }

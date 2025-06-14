@@ -61,7 +61,7 @@ class GioHang
     }
 
     public function addDetailGioHang($gio_hang_id, $san_pham_id, $so_luong){
-                try {
+        try {
         $sql = 'INSERT INTO chi_tiet_gio_hangs (gio_hang_id, san_pham_id, so_luong)
                 VALUES (:gio_hang_id, :san_pham_id, :so_luong)
             ';

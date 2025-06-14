@@ -72,6 +72,6 @@
 <?php include './views/layout/footer.php'; ?>
 <!-- End Footer -->
 <!-- Page specific script -->
-< </body>
+ </body>
 
     </html>

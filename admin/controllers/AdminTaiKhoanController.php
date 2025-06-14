@@ -45,12 +45,12 @@
 
             if(empty($errors)){
 
-                $password = password_hash('123@123ab', PASSWORD_BCRYPT);
+                $mat_khau = password_hash('123456', PASSWORD_BCRYPT);
                 // khai báo chức vụ 
                 $chuc_vu_id = 1;
-                //var_dump($password);die;
-                $this->modelTaiKhoan->insertTaiKhoan($ho_ten, $email, $password, $chuc_vu_id);
-
+                // var_dump($chuc_vu_id);die;
+                $user=$this->modelTaiKhoan->insertTaiKhoan($ho_ten, $email, $mat_khau, $chuc_vu_id);
+                // var_dump($user);die;
 
                 header("Location: " . BASE_URL_ADMIN . '?act=list-tai-khoan-quan-tri') ;
                 exit();
@@ -83,13 +83,13 @@
 
             $errors = [];
 
-            if (empty($ho_ten)) {
+            if (!isset($ho_ten)) {
                 $errors['ho_ten'] = 'Tên Người Dùng Không Được Để Trống';
             }
-            if (empty($email)) {
+            if (!isset($email)) {
                 $errors['email'] = 'Email Người Dùng Không Được Để Trống';
             }
-            if (empty($trang_thai)) {
+            if (!in_array($trang_thai,['1','2'])) {
                 $errors['trang_thai'] = 'Vui lòng chọn trạng thái';
 
                 $_SESSION['error'] = $errors;
@@ -173,7 +173,7 @@
             if (empty($gioi_tinh)) {
                 $errors['gioi_tinh'] = 'Giới Tinh Người Dùng Không Được Để Trống';
             }
-            if (empty($trang_thai)) {
+            if (!isset($trang_thai)) {
                 $errors['trang_thai'] = 'Vui lòng chọn trạng thái';
             }
 
