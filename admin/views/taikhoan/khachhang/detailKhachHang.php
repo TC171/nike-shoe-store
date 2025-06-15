@@ -94,7 +94,7 @@
                                         </a>
                                     </td>
                                         <td><?= $binhLuan['noi_dung'] ?></td>
-                                        <td><?= $binhLuan['ngay_dat'] ?></td>
+                                        <td><?= $binhLuan['ngay_dang'] ?></td>
                                         <td><?= $binhLuan['trang_thai'] == 1 ? 'Hiển thị' : 'Bị Ẩn' ?></td>
                                         <td>
 
@@ -148,8 +148,8 @@
                                         <td><span class="badge text-bg-<?= $donHang['ten_trang_thai'] ?>"><?= $donHang['ten_trang_thai'] ?></span></td>
                                         <td>
                                             <div class="btn-group">
-                                                <a href="<?= BASE_URL_ADMIN . '?act=chi-tiet-don-hang&id_don_hang=' . $sanPham['id'] ?>"><button class="btn btn-primary"><i class="far fa-eye"></i></button></a>
-                                                <a href="<?= BASE_URL_ADMIN . '?act=form-sua-don-hang&id_don_hang=' . $sanPham['id'] ?>"><button class="btn btn-warning"><i class="fas fa-cogs"></i></button></a>
+                                                <a href="<?= BASE_URL_ADMIN . '?act=chi-tiet-don-hang&id_don_hang=' . $donHang['id'] ?>"><button class="btn btn-primary"><i class="far fa-eye"></i></button></a>
+                        <a href="<?= BASE_URL_ADMIN . '?act=form-sua-don-hang&id_don_hang=' . $donHang['id'] ?>"><button class="btn btn-warning"><i class="fas fa-cogs"></i></button></a>
                                             </div>
                                         </td>
                                     </tr>

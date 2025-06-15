@@ -16,7 +16,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Quan ly danh sach don hang</h1>
+          <h1>Quản Lý Danh Sách Đơn Hàng</h1>
         </div>
       </div>
     </div><!-- /.container-fluid -->

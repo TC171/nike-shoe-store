@@ -6,12 +6,14 @@ class HomeController
     public $modelTaiKhoan;
     public $modelGioHang;
     public $modelDonHang;
+    public $conn ;
 
     public function __construct(){
         $this->modelSanPham = new SanPham();
         $this->modelTaiKhoan = new TaiKhoan();
         $this->modelGioHang = new GioHang();
         $this->modelDonHang = new DonHang();
+        $this->conn = connectDB();
     }
     public function home(){
         $listSanPham = $this->modelSanPham->getAllSanPham();
@@ -66,6 +68,55 @@ class HomeController
             exit();
         }
     }
+
+    public function formDangKy(){
+        require_once './views/auth/formDangKy.php';
+
+        deleteSessionError();  
+    }
+
+    public function dangky() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $ho_ten = trim($_POST['ho_ten']);
+        $email = trim($_POST['email']);
+        $so_dien_thoai = trim($_POST['so_dien_thoai']);
+        $ngay_sinh = trim($_POST['ngay_sinh']);
+        $mat_khau = trim($_POST['mat_khau']);
+        $confirm_mat_khau = trim($_POST['confirm_mat_khau']);
+
+        // Kiểm tra mật khẩu
+        if ($mat_khau !== $confirm_mat_khau) {
+            $_SESSION['error'] = "Mật khẩu không khớp!";
+            header("Location: " . BASE_URL . "?act=dang-ky");
+            exit;
+        }
+
+        // Mã hóa mật khẩu
+        $hashed_password = password_hash($mat_khau, PASSWORD_DEFAULT);
+
+        // Thêm người dùng vào cơ sở dữ liệu
+        $sql = "INSERT INTO tai_khoans (ho_ten, email, so_dien_thoai, ngay_sinh, mat_khau, chuc_vu_id, trang_thai) 
+                VALUES (:ho_ten, :email, :so_dien_thoai, :ngay_sinh, :mat_khau, 2, 1)";
+        $stmt = $this->conn->prepare($sql);
+
+        try {
+            $stmt->execute([
+                ':ho_ten' => $ho_ten,
+                ':email' => $email,
+                ':so_dien_thoai' => $so_dien_thoai,
+                ':ngay_sinh' => $ngay_sinh,
+                ':mat_khau' => $hashed_password
+            ]);
+            $_SESSION['success'] = "Đăng ký thành công!";
+            header("Location: " . BASE_URL );
+            exit;
+        } catch (Exception $e) {
+            $_SESSION['error'] = "Lỗi: " . $e->getMessage();
+            header("Location: " . BASE_URL . "?act=dang-ky");
+            exit;
+        }
+    }
+}
 
     public function addGioHang(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -160,7 +211,7 @@ class HomeController
 
             $ma_don_hang = rand(100000,999999);
 
-            $this->modelDonHang->addDonHang($tai_khoan_id,
+            $don_hang_id = $this->modelDonHang->addDonHang($tai_khoan_id,
                                             $ten_nguoi_nhan,
                                             $email_nguoi_nhan,
                                             $sdt_nguoi_nhan,
@@ -171,8 +222,9 @@ class HomeController
                                             $ngay_dat,
                                             $ma_don_hang,
                                             $trang_thai_id
-            );
-            // Lấy Thông Tin Giỏ Hàng của người dùng
+                                            );
+            }
+                // Lấy Thông Tin Giỏ Hàng của người dùng
             $gioHang = $this->modelGioHang->getGioHangFromUser($tai_khoan_id);
 
             //Lưu Sản Phẩm Vào Chi TIết Đơn Hàng
@@ -182,8 +234,84 @@ class HomeController
                     $donGia = $item['gia_khuyen_mai'] ?? $item['gia_khuyen_mai'];
 
                     $this->modelDonHang->addChiTietDonHang($don_hang_id , $item['san_pham_id'] , $donGia , $item['so_luong'] , $donGia * $item['so_luong']);
-                }
+                    $this->modelGioHang->clearDetailGioHang($gioHang['id']);
+                    $this->modelGioHang->clearGioHang($tai_khoan_id);
+                    // header("location: ". BASE_URL . '?act=lich-su-mua-hang');
+                    exit;
+                } 
+            }else {
+                var_dump('lỗi');die;
             }
-        }
     }     
+
+    public function lichSuMuaHang(){
+        if (isset($_SESSION['user_client'])) {
+                $user = $this->modelTaiKhoan->getTaiKhoanFromEmail($_SESSION['user_client']);
+                $tai_khoan_id = $user['id'];
+
+                $arrTrangThaiDonHang= $this->modelDonHang->getTrangThaiDonHang();
+                $trangThaiDonHang = array_column($arrTrangThaiDonHang, 'ten_trang_thai','id');
+
+                $arrPhuongThucThanhToan= $this->modelDonHang->getPhuongThucThanhToan();
+                $phuongThucThanhToan = array_column($arrPhuongThucThanhToan, 'ten_phuong_thuc','id');
+
+                // var_dump($trangThaiDonHang);die;
+                $donHang = $this->modelDonHang -> getDonHangFromUser($tai_khoan_id);
+                require_once './views/lichSuMuaHang.php';
+        }else {
+            header("location: ". BASE_URL . '?act=login');
+        }
+    }
+
+    public function chiTietMuaHang(){
+         if (isset($_SESSION['user_client'])) {
+            $user = $this->modelTaiKhoan->getTaiKhoanFromEmail($_SESSION['user_client']);
+            $tai_khoan_id = $user['id'];
+
+            $donHangId=$_GET['id'];
+
+            $arrTrangThaiDonHang= $this->modelDonHang->getTrangThaiDonHang();
+            $trangThaiDonHang = array_column($arrTrangThaiDonHang, 'ten_trang_thai','id');
+
+            $arrPhuongThucThanhToan= $this->modelDonHang->getPhuongThucThanhToan();
+            $phuongThucThanhToan = array_column($arrPhuongThucThanhToan, 'ten_phuong_thuc','id');
+
+            $donHang = $this->modelDonHang->getDonHangById($donHangId);
+            $chiTietDonHang = $this->modelDonHang->getChiTietDonHangById($donHangId);
+            if ($donHang['tai_khoan_id'] != $tai_khoan_id) {
+                echo "Bạn Không Có Quyền Hủy Đơn Hàng Này";
+                exit;
+               }
+            require_once './views/chiTietMuaHang.php';
+                
+        }else {
+            header("location: ". BASE_URL . '?act=login');
+        }
+    }
+
+    public function huyDonHang(){
+        if (isset($_SESSION['user_client'])) {
+                $user = $this->modelTaiKhoan->getTaiKhoanFromEmail($_SESSION['user_client']);
+                $tai_khoan_id = $user['id'];
+
+               $donHangId=$_GET['id'];
+               $donHang = $this->modelDonHang->getDonHangById($donHangId);
+               if ($donHang['tai_khoan_id'] != $tai_khoan_id) {
+                echo "Bạn Không Có Quyền Hủy Đơn Hàng Này";
+                exit;
+               }
+               if ($donHang['trang_thai_id'] != 1) {
+                echo "Chỉ Đơn Hàng Ở Trạng Thái Chưa Xác Nhận Mới Thực Hiện Được Thao Tác Này";
+                exit;
+               }
+               $this->modelDonHang->updateTrangThaiDonHang($donHangId ,8);
+               header("location:" . BASE_URL . '?act=lich-su-mua-hang');
+                exit();
+        }else {
+            header("location: ". BASE_URL . '?act=login');
+        }
+    }
+
+
+
 }

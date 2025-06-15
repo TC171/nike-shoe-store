@@ -69,9 +69,12 @@
                                             <ul class="dropdown-list">
                                                 <?php if (!isset($_SESSION['user_client'])) { ?>
                                                         <li><a href="<?= BASE_URL . '?act=login' ?>">Đăng Nhập</a></li>
+                                                        <li><a href="<?= BASE_URL . '?act=dang-ky' ?>">Đăng Ký</a></li>
+
                                                 <?php } else {?>
                                                     
                                                     <li><a href="my-account.html">Tài Khoản</a></li>
+                                                    <li><a href="<?= BASE_URL . '?act=lich-su-mua-hang' ?>">Đơn Hàng Của Tôi</a></li>
                                                 <?php }?>
                                             </ul>
                                         </li>

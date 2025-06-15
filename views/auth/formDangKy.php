@@ -1,78 +1,74 @@
+<!-- Vũ tất cả  -->
+<?php require_once 'views/layout/header.php' ?>
+<?php require_once 'views/layout/menu.php' ?>
 
-<?php   require_once 'views/layout/header.php'?>
-<?php   require_once 'views/layout/menu.php'?>
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Đăng Ký</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
 
- <main>
-        <!-- breadcrumb area start -->
-        <div class="breadcrumb-area">
-            <div class="container">
+    <!-- login register wrapper start -->
+    <div class="login-register-wrapper section-padding">
+        <div class="container" style="max-width: 600px;">
+            <div class="member-area-from-wrap">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="breadcrumb-wrap">
-                            <nav aria-label="breadcrumb">
-                                <ul class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-home"></i></a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Đăng Nhập</li>
-                                </ul>
-                            </nav>
+                    <!-- Registration Content Start -->
+                    <div class="col-lg-12">
+                        <div class="login-reg-form-wrap">
+                            <h5 class="text-center">Đăng Ký</h5>
+                            <?php if (isset($_SESSION['error'])) { ?>
+                                <p class="text-danger login-box-msg text-center"><?= $_SESSION['error'] ?></p>
+                            <?php } ?>
+                            <form action="<?= BASE_URL . '?act=check-dang-ky' ?>" method="post">
+                                <div class="single-input-item">
+                                    <input type="text" placeholder="Họ và Tên" name="ho_ten" required />
+                                </div>
+                                <div class="single-input-item">
+                                    <input type="email" placeholder="Email" name="email" required />
+                                </div>
+                                <div class="single-input-item">
+                                    <input type="text" placeholder="Số Điện Thoại" name="so_dien_thoai" required />
+                                </div>
+                                <div class="single-input-item">
+                                    <input type="date" placeholder="Ngày Sinh" name="ngay_sinh" required />
+                                </div>
+                                <div class="single-input-item">
+                                    <input type="password" placeholder="Mật Khẩu" name="mat_khau" required />
+                                </div>
+                                <div class="single-input-item">
+                                    <input type="password" placeholder="Xác Nhận Mật Khẩu" name="confirm_mat_khau" required />
+                                </div>
+                                <div class="single-input-item">
+                                    <button class="btn btn-sqr">Đăng Ký</button>
+                                </div>
+                            </form>
+                            <div class="text-center">
+                                <p>Đã có tài khoản? <a href="<?= BASE_URL . '?act=login' ?>">Đăng Nhập</a></p>
+                            </div>
                         </div>
                     </div>
+                    <!-- Registration Content End -->
                 </div>
             </div>
         </div>
-        <!-- breadcrumb area end -->
-
-        <!-- login register wrapper start -->
-        <div class="login-register-wrapper section-padding">
-            <div class="container " style="max: width 40px;">
-                <div class="member-area-from-wrap">
-                    <div class="row">
-                        <!-- Login Content Start -->
-                        <div class="col-lg-12">
-                            <div class="login-reg-form-wrap">
-                                <h5 class="text-center">Đăng Nhập</h5>
-                                <?php if (isset($_SESSION['error'])) { ?>
-                                    <p class="text-danger login-box-msg text-center"> <?= $_SESSION['error'] ?></p>
-                                <?php } else { ?>
-                                    <p class="login-box-msg text-center">Vui lòng đăng nhập</p>
-                                <?php } ?>
-                                <form action="<?= BASE_URL . '?act=check-login' ?>" method="post">
-                                    <div class="single-input-item">
-                                        <input type="email" placeholder="Email or Username" name="email" required />
-                                    </div>
-                                    <div class="single-input-item">
-                                        <input type="password" placeholder="Enter your Password" name="password" required />
-                                    </div>
-                                    <div class="single-input-item">
-                                        <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
-                                            
-                                            <a href="#" class="forget-pwd">Quên Mật Khẩu ?</a>
-                                        </div>
-                                    </div>
-                                    <div class="single-input-item">
-                                        <button class="btn btn-sqr">Đăng Nhập</button>
-                                    </div>
-                                </form>
-                                <div class="text-center">
-                                <p>Bạn Chưa Có Tài Khoản <a href="<?= BASE_URL . '?act=dang-ky' ?>">Đăng Ký</a></p>
-                            </div>
-                            </div>
-                        </div>
-                        <!-- Login Content End -->
-
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- login register wrapper end -->
-    </main>
-
-
-
-
-
-
+    </div>
+    <!-- login register wrapper end -->
+</main>
 
 <!-- offcanvas mini cart start -->
 <div class="offcanvas-minicart-wrapper">
@@ -153,6 +149,4 @@
 </div>
 <!-- offcanvas mini cart end -->
 
-<?php
-    require_once 'views//layout/footer.php';
-?>
+<?php require_once 'views/layout/footer.php'; ?>

@@ -16,7 +16,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Quan ly danh sach don hàng  - Đơn hàng : <?= $donHang['ma_don_hang']?></h1>
+          <h1>Quản Lý Đơn Hàng  <?= $donHang['ma_don_hang']?></h1>
         </div>
       </div>
     </div><!-- /.container-fluid -->

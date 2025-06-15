@@ -52,34 +52,31 @@ use Vtiful\Kernel\Excel;
         }
     }
 
-    public function updateTaiKhoan($id, $ho_ten, $email, $so_dien_thoai, $trang_thai)
-    {
-        try {
-            $sql = ' UPDATE tai_khoans
-                    SET 
-                        ho_ten = :ho_ten,
-                        email = :email,
-                        so_dien_thoai = :so_dien_thoai,
-                        trang_thai = :trang_thai,
-                        
-                    WHERE id = :id ';
+    public function updateTaiKhoan($id, $ho_ten, $email, $so_dien_thoai, $trang_thai) {
+    try {
+        $sql = 'UPDATE tai_khoans
+                SET 
+                    ho_ten = :ho_ten,
+                    email = :email,
+                    so_dien_thoai = :so_dien_thoai,
+                    trang_thai = :trang_thai
+                WHERE id = :id';
 
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute([
-                ':ho_ten' => $ho_ten,
-                ':email' => $email,
-                ':so_dien_thoai' => $so_dien_thoai,
-                ':trang_thai' => $trang_thai,
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            ':ho_ten' => $ho_ten,
+            ':email' => $email,
+            ':so_dien_thoai' => $so_dien_thoai,
+            ':trang_thai' => $trang_thai,
+            ':id' => $id,
+        ]);
 
-                ':id' => $id,
-
-            ]);
-
-            return true;
-        } catch (Exception $e) {
-            echo "lỗi" . $e->getMessage();
-        }
+        return true;
+    } catch (Exception $e) {
+        echo "Lỗi: " . $e->getMessage();
+        return false; // Trả về false nếu có lỗi
     }
+}
 
     public function resetPassword($id, $mat_khau)
     {
@@ -180,6 +177,15 @@ use Vtiful\Kernel\Excel;
             echo "Lỗi " . $e->getMessage();
         }
     }
+
+
+    public function countTotalUsers() {
+    $sql = "SELECT COUNT(*) as total FROM tai_khoans WHERE chuc_vu_id = :chuc_vu_id";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute([':chuc_vu_id' => 2]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'];
+}
 
 } 
  ?>

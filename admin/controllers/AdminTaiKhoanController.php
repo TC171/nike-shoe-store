@@ -71,42 +71,41 @@
         deleteSessionError();
     }
 
-    public function postEditQuanTri()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    public function postEditQuanTri() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            $quan_tri_id = $_POST['quan_tri_id'] ?? '';
-            $ho_ten = $_POST['ho_ten'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $so_dien_thoai = $_POST['so_dien_thoai'] ?? '';
-            $trang_thai = $_POST['trang_thai'] ?? '';
+        $quan_tri_id = $_POST['quan_tri_id'] ?? '';
+        $ho_ten = $_POST['ho_ten'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $so_dien_thoai = $_POST['so_dien_thoai'] ?? '';
+        $trang_thai = $_POST['trang_thai'] ?? '';
 
-            $errors = [];
+        $errors = [];
 
-            if (!isset($ho_ten)) {
-                $errors['ho_ten'] = 'Tên Người Dùng Không Được Để Trống';
-            }
-            if (!isset($email)) {
-                $errors['email'] = 'Email Người Dùng Không Được Để Trống';
-            }
-            if (!in_array($trang_thai,['1','2'])) {
-                $errors['trang_thai'] = 'Vui lòng chọn trạng thái';
+        if (empty($ho_ten)) {
+            $errors['ho_ten'] = 'Tên Người Dùng Không Được Để Trống';
+        }
+        if (empty($email)) {
+            $errors['email'] = 'Email Người Dùng Không Được Để Trống';
+        }
+        if (!in_array($trang_thai, ['1', '2'])) {
+            $errors['trang_thai'] = 'Vui lòng chọn trạng thái';
+        }
 
-                $_SESSION['error'] = $errors;
-
-
-                if (empty($errors)) {
-                    $this->modelTaiKhoan->updateTaiKhoan($quan_tri_id, $ho_ten, $email, $so_dien_thoai, $trang_thai);
-                    header("Location: " . BASE_URL_ADMIN . '?act=list-tai-khoan-quan-tri');
-                    exit();
-                } else {
-                    $_SESSION['flash'] = true;
-                    header("Location: " . BASE_URL_ADMIN . '?act=form-sua-quan-tri&id_quan_tri=' . $quan_tri_id);
-                    exit();
-                }
-            }
+        // Lưu lỗi vào session nếu có
+        if (!empty($errors)) {
+            $_SESSION['error'] = $errors;
+            $_SESSION['flash'] = true;
+            header("Location: " . BASE_URL_ADMIN . '?act=form-sua-quan-tri&id_quan_tri=' . $quan_tri_id);
+            exit();
+        } else {
+            // Nếu không có lỗi, cập nhật tài khoản
+            $this->modelTaiKhoan->updateTaiKhoan($quan_tri_id, $ho_ten, $email, $so_dien_thoai, $trang_thai);
+            header("Location: " . BASE_URL_ADMIN . '?act=list-tai-khoan-quan-tri');
+            exit();
         }
     }
+}
 
     public function resetPassword()
     {
@@ -291,5 +290,7 @@
 
         }
     }
+
+    
 } 
  ?>

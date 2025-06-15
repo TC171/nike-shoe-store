@@ -65,7 +65,7 @@
 
                       <td>
                         <div class="btn-group">
-                        <a href="<?= BASE_URL_ADMIN . '?act=chi_tiet_khach_hang&id_khach_hang=' . $khachHang['id'] ?>"><button class="btn btn-primary"><i class="fa fa-eye"></i></button></a>
+                        <a href="<?= BASE_URL_ADMIN . '?act=chi-tiet-khach-hang&id_khach_hang=' . $khachHang['id'] ?>"><button class="btn btn-primary"><i class="fa fa-eye"></i></button></a>
                         <a href="<?= BASE_URL_ADMIN . '?act=form-sua-khach-hang&id_khach_hang=' . $khachHang['id'] ?>"><button class="btn btn-warning"><i class="fa fa-cog"></i></button></a>
                         <a href="<?= BASE_URL_ADMIN . '?act=reset-password&id_quan_tri=' . $khachHang['id'] ?>" onclick="return confirm('Bạn có muốn reset password của tài khoản này không ?')"><button class="btn btn-danger"><i class="fas fa-circle-notch"></i></i></button></a>
                         
